@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Email Compromise - Threat Overview</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        .presentation-slide {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 60px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .title {
+            font-size: 3.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: #cbd5e1;
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            flex: 1;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .threat-stats {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(239, 68, 68, 0.1);
+        }
+        
+        .stats-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ef4444;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-label {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ef4444;
+            text-shadow: 0 2px 10px rgba(239, 68, 68, 0.3);
+        }
+        
+        .defense-strategies {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(34, 197, 94, 0.1);
+        }
+        
+        .defense-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #22c55e;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .defense-list {
+            list-style: none;
+        }
+        
+        .defense-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(34, 197, 94, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid #22c55e;
+            transition: all 0.3s ease;
+        }
+        
+        .defense-item:hover {
+            background: rgba(34, 197, 94, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .defense-icon {
+            width: 24px;
+            height: 24px;
+            background: #22c55e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .defense-text {
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        
+        .quote-section {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-top: 20px;
+            padding: 25px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .quote {
+            font-size: 1.4rem;
+            font-weight: 600;
+            font-style: italic;
+            color: #3b82f6;
+            margin-bottom: 10px;
+        }
+        
+        .quote-attribution {
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .floating-element {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-element:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: -2s;
+        }
+        
+        .floating-element:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            animation-delay: -4s;
+        }
+        
+        .floating-element:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -1s;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            33% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+            66% {
+                transform: translateY(10px) rotate(-3deg);
+            }
+        }
+        
+        .ai-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #8b5cf6, #a855f7);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+        
+        .warning-icon {
+            color: #f59e0b;
+            font-size: 1.2rem;
+        }
+        
+        .shield-icon {
+            color: #22c55e;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-slide">
+        <div class="ai-indicator">
+            🤖 AI-Enhanced Attacks +1265%
+        </div>
+        
+        <div class="floating-elements">
+            <div class="floating-element">📧</div>
+            <div class="floating-element">⚠️</div>
+            <div class="floating-element">🔒</div>
+        </div>
+        
+        <div class="header">
+            <h1 class="title">Business Email Compromise</h1>
+            <p class="subtitle">Ethical Hacker Insights on Testing & Mitigating Vulnerabilities</p>
+        </div>
+        
+        <div class="main-content">
+            <div class="threat-stats">
+                <h2 class="stats-header">
+                    <span class="warning-icon">⚠️</span>
+                    2025 Threat Landscape
+                </h2>
+                
+                <div class="stat-item">
+                    <span class="stat-label">Wire Transfer Incidents (Q1 vs Q4 2024)</span>
+                    <span class="stat-value">+33%</span>
+                </div>
+                
+                <div class="stat-item">
+                    <span class="stat-label">Businesses Hit in Past Year</span>
+                    <span class="stat-value">64%</span>
+                </div>
+                
+                <div class="stat-item">
+                    <span class="stat-label">Average Loss Per Incident</span>
+                    <span class="stat-value">$4.67M</span>
+                </div>
+                
+                <div class="stat-item">
+                    <span class="stat-label">Global BEC Damages (2025 YTD)</span>
+                    <span class="stat-value">$2.7B</span>
+                </div>
+                
+                <div class="stat-item">
+                    <span class="stat-label">Mailbox Access Speed (<1 hour)</span>
+                    <span class="stat-value">41%</span>
+                </div>
+                
+                <div class="stat-item">
+                    <span class="stat-label">AI-Generated BEC Content (Apr 2025)</span>
+                    <span class="stat-value">14%</span>
+                </div>
+            </div>
+            
+            <div class="defense-strategies">
+                <h2 class="defense-header">
+                    <span class="shield-icon">🛡️</span>
+                    Ethical Testing & Defense
+                </h2>
+                
+                <ul class="defense-list">
+                    <li class="defense-item">
+                        <div class="defense-icon">1</div>
+                        <div class="defense-text">
+                            <strong>Email Authentication:</strong> Implement SPF, DKIM, and DMARC protocols to validate sender legitimacy
+                        </div>
+                    </li>
+                    
+                    <li class="defense-item">
+                        <div class="defense-icon">2</div>
+                        <div class="defense-text">
+                            <strong>Penetration Testing:</strong> Simulate spoofing attacks with controlled phishing campaigns and header manipulation
+                        </div>
+                    </li>
+                    
+                    <li class="defense-item">
+                        <div class="defense-icon">3</div>
+                        <div class="defense-text">
+                            <strong>Multi-Factor Verification:</strong> Require additional authentication for financial transactions
+                        </div>
+                    </li>
+                    
+                    <li class="defense-item">
+                        <div class="defense-icon">4</div>
+                        <div class="defense-text">
+                            <strong>Staff Training:</strong> Educate workforce to verify suspicious requests and recognize AI-generated content
+                        </div>
+                    </li>
+                    
+                    <li class="defense-item">
+                        <div class="defense-icon">5</div>
+                        <div class="defense-text">
+                            <strong>Advanced Detection:</strong> Deploy AI-resistant filters and behavioral analysis for emerging threats
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="quote-section">
+                <div class="quote">
+                    "The organization's first line of defense in BEC attacks is their workforce"
+                </div>
+                <div class="quote-attribution">
+                    — SentinelLink Cybersecurity Research
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
